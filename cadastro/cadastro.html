@@ -303,29 +303,24 @@
     };
 
     window.addEventListener("resize", function () {
-      if (window.innerWidth > 768) {
-        if(sideBar){
-            toggleSideBar();
-            alert("ooo")
-        };
-        fechar.style.display = "none";
-        comandos.style.display = "flex";
-        comandos.style.flexDirection = "row";
-        comandos.style.position = "relative"; 
-        comandos.style.left = "";
-        comandos.style.top = "";
-        comandos.style.backgroundColor = "";
-        comandos.style.height = "";
-        comandos.style.width = "";
-        comandos.style.padding = "";
-        comandos.style.animationDuration = "";
-        comandos.style.transition = "";
-      } if (window.innerWidth <= 768) {
-        if(sideBar)
-            toggleSideBar();
-      };
+        if (window.innerWidth > 768) {
+            fechar.style.display = "none";
+            comandos.style.display = ""; 
+            comandos.style.flexDirection = "row";
+            comandos.style.position = "relative"; 
+            comandos.style.left = "";
+            comandos.style.top = "";
+            comandos.style.backgroundColor = "";
+            comandos.style.height = "";
+            comandos.style.width = "";
+            comandos.style.padding = "";
+            comandos.style.animationDuration = "";
+            comandos.style.transition = "";
+        } else {
+            if (sideBar) toggleSideBar();
+                comandos.style.display = ""; 
+        }
     });
-
   });
 </script>
 
