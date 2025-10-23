@@ -20,7 +20,7 @@
         }
 
         hr{
-            width: 100%;
+            width: 100%; 
             height: 1px;
             border: 0px;
             border-radius: 100%;
@@ -36,24 +36,28 @@
         font-weight: 300;
         font-style: normal;
         }
-
+        .foto_perfil {
+            position: absolute;
+            right: 1.5em;
+        }
         .img_logo {
-            width: 100px;
+            margin-left: -20px;
+            width: 135px;
         }
 
-        .header,
+        header,
         .comandos {
             display: flex;
             flex-direction: row;
             align-items: center;
         }
 
-        .header {
+        header {
             background-color: #272C2F;
             box-shadow: 1px 1px 2px black;
             height: 4em;
-            justify-content: space-between;
-            padding: 0 5%;
+            padding-left: 1.5em;
+            gap: 1em;
         }
 
         .comandos {
@@ -102,19 +106,21 @@
             .icone_lista {
                 display: block;
             }
+            #comandos{
+                display: none;
 
-            .comandos {
+            } 
+            #fechar{
                 display: none;
             }
         }
 
         @media screen and (min-width: 769px) {
-        .comandos {
-            display: flex;
-            flex-direction: row;
+            .comandos {
+                display: flex;
+                flex-direction: row;
         }
 }
-
 
         .dados_pessoais {
             display: flex;
@@ -179,7 +185,7 @@
 </head>
 
 <body>
-    <div class="header" id="header">
+    <header id="header">
         <button onclick="toggleSideBar()" class="icone_lista">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list"
                 viewBox="0 0 16 16">
@@ -191,7 +197,7 @@
             <img src="LogoNexos.png" class="img_logo" alt="Logo NexOS">
         </div>
         <div class="comandos" id="comandos">
-            <button onclick="toggleSideBar()" class="icone_lista">
+            <button onclick="toggleSideBar()" class="icone_lista" id="fechar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x"
                     viewBox="0 0 16 16">
                     <path
@@ -206,14 +212,14 @@
         <div class="foto_perfil">
             <a href="#"><img src="icone_usuario.png" alt="usuario" class="icon_usuario"></a>
         </div>
-    </div>
+    </header>
     <div tabindex="0" onclick="fechaSideBar()" class="content" id="content">
         <div class="titulo_dado">
             <h1>Dados Pessoais</h1>
         </div>
         <hr>
         <div class="dados_pessoais">
-            <div class="dado league-spartan">
+            <div class="dado">
                 <h1>Nome</h1>
                 <input type="text">
             </div>
@@ -264,11 +270,13 @@
     var header = document.getElementById("header");
     var comandos = document.getElementById("comandos");
     var content = document.getElementById("content");
+    var fechar = document.getElementById("fechar");
     var sideBar = false;
 
     window.toggleSideBar = function () {
       sideBar = !sideBar;
       if (sideBar) {
+        fechar.style.display = "block";
         comandos.style.display = "flex";
         content.style.filter = "blur(2px)";
         comandos.style.position = "absolute"; 
@@ -300,6 +308,7 @@
             toggleSideBar();
             alert("ooo")
         };
+        fechar.style.display = "none";
         comandos.style.display = "flex";
         comandos.style.flexDirection = "row";
         comandos.style.position = "relative"; 
