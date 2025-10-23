@@ -8,59 +8,56 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300&display=swap');
 
+        :root {
+            --cor-fundo: #373F46;
+            --cor-header: #272C2F;
+            --cor-nexos: #26a5ee;
+            --cor-texto: #fff;
+        }
+
         * {
             margin: 0;
             padding: 0;
-            font-family: "League Spartan";
+            font-family: "League Spartan", sans-serif;
         }
 
         body {
-            background-color: #373F46;
-            color: white;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
         }
 
-        hr{
-            width: 100%; 
+        hr {
+            width: 100%;
             height: 1px;
-            border: 0px;
-            border-radius: 100%;
-            border-top: 1px solid #26a5ee;
+            border: 0;
+            border-top: 1px solid var(--cor-nexos);
             margin-top: 3px;
-            background-color: none;
         }
 
-        
-        .league-spartan {
-        font-family: "League Spartan", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 300;
-        font-style: normal;
+        header {
+            background-color: var(--cor-header);
+            box-shadow: 1px 1px 2px black;
+            height: 4em;
+            padding-left: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 1em;
         }
+
         .foto_perfil {
             position: absolute;
             right: 1.5em;
         }
+
         .img_logo {
             margin-left: -20px;
             width: 135px;
         }
 
-        header,
         .comandos {
             display: flex;
             flex-direction: row;
             align-items: center;
-        }
-
-        header {
-            background-color: #272C2F;
-            box-shadow: 1px 1px 2px black;
-            height: 4em;
-            padding-left: 1.5em;
-            gap: 1em;
-        }
-
-        .comandos {
             gap: 3em;
             z-index: 9999;
         }
@@ -68,13 +65,14 @@
         .comandos a {
             color: white;
             text-decoration: none;
+            text-align: center;
             transition: 1s;
             font-weight: bold;
         }
 
         .active {
             background-color: rgb(78, 78, 78);
-            padding: 10px;
+            padding: 10px 10px 7px;
             border-radius: 10px;
         }
 
@@ -97,20 +95,21 @@
             display: none;
         }
 
-        @keyframes mostraSideBar{
-        from {left: -35vw}
-        top {left: 0vw;}
+        @keyframes mostraSideBar {
+            from { left: -35vw; }
+            to { left: 0; }
         }
 
         @media screen and (max-width: 768px) {
             .icone_lista {
                 display: block;
             }
-            #comandos{
-                display: none;
 
-            } 
-            #fechar{
+            .comandos {
+                display: none;
+            }
+
+            .fechar {
                 display: none;
             }
         }
@@ -119,10 +118,33 @@
             .comandos {
                 display: flex;
                 flex-direction: row;
+            }
         }
-}
 
-        .dados_pessoais {
+        .comandos.sidebar-ativa {
+            display: flex;
+            position: absolute;
+            left: 0;
+            top: 0;
+            flex-direction: column;
+            background-color: #222629;
+            height: 100%;
+            width: 30vw;
+            padding: 1em;
+            animation: mostraSideBar 0.5s;
+            transition: 0.5s;
+    
+            .fechar {
+                display:block
+            }
+        }
+
+        .content.blur {
+            filter: blur(2px);
+        }
+
+        .dados_pessoais,
+        .dados_profissionais {
             display: flex;
             flex-direction: row;
             gap: 3em;
@@ -130,65 +152,47 @@
             padding-left: 3em;
         }
 
-        .dados_profissionais{
-            display: flex;
-            flex-direction: row;
-            margin-top: 3em;
-        }
-
-        .titulo_dado{
+        .titulo_dado {
             display: flex;
             margin-top: 2em;
             margin-left: 1em;
         }
 
-        .dado {
+        .dado,
+        .cargo {
             flex-direction: column;
             margin-bottom: 1em;
             display: flex;
             font-size: small;
         }
 
-        .cargo{
-            flex-direction: column;
-            margin-bottom: 1em;
-            display: flex;
-        }
-
-        .box_pessoal {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-evenly;
-        }
-
-        .perfil{
+        .perfil {
             display: flex;
             margin-top: 1em;
             gap: 3em;
         }
 
-        .foto{
+        .foto {
             margin-left: 1em;
         }
 
-        .botao, .cadastrar{
+        .botao,
+        .cadastrar {
             width: 100px;
             height: 30px;
             border-radius: 5px;
         }
 
-        .cadastrar{
-            background-color: #26a5ee;
+        .cadastrar {
+            background-color: var(--cor-nexos);
         }
     </style>
 </head>
 
 <body>
     <header id="header">
-        <button onclick="toggleSideBar()" class="icone_lista">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list"
-                viewBox="0 0 16 16">
+        <button class="icone_lista" id="abrir">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
                     d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
             </svg>
@@ -196,10 +200,9 @@
         <div class="logo">
             <img src="LogoNexos.png" class="img_logo" alt="Logo NexOS">
         </div>
-        <div class="comandos" id="comandos">
-            <button onclick="toggleSideBar()" class="icone_lista" id="fechar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x"
-                    viewBox="0 0 16 16">
+        <nav class="comandos" id="comandos">
+            <button class="icone_lista fechar" id="fechar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                     <path
                         d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                 </svg>
@@ -208,120 +211,96 @@
             <a href="#">Programação</a>
             <a href="#">Gerenciamento</a>
             <a href="#" class="active">Cadastro</a>
-        </div>
+        </nav>
         <div class="foto_perfil">
             <a href="#"><img src="icone_usuario.png" alt="usuario" class="icon_usuario"></a>
         </div>
     </header>
-    <div tabindex="0" onclick="fechaSideBar()" class="content" id="content">
-        <div class="titulo_dado">
+
+    <main class="content" id="content">
+        <section class="titulo_dado">
             <h1>Dados Pessoais</h1>
-        </div>
+        </section>
         <hr>
-        <div class="dados_pessoais">
+        <section class="dados_pessoais">
             <div class="dado">
-                <h1>Nome</h1>
-                <input type="text">
-            </div>
-            <div class="dado">
-                <h1>Sobrenome</h1>
-                <input type="text">
+                <h1>Nome</h1><input type="text">
             </div>
             <div class="dado">
-                <h1>Data de Nascimento</h1>
-                <input type="text">
+                <h1>Sobrenome</h1><input type="text">
             </div>
             <div class="dado">
-                <h1>CPF</h1>
-                <input type="text">
+                <h1>Data de Nascimento</h1><input type="text">
             </div>
             <div class="dado">
-                <h1>Endereço</h1>
-                <input type="text">
+                <h1>CPF</h1><input type="text">
             </div>
-            <div class="foto_perfil">
+            <div class="dado">
+                <h1>Endereço</h1><input type="text">
             </div>
-        </div>
-        <div class="titulo_dado">
+        </section>
+
+        <section class="titulo_dado">
             <h1>Dados Profissionais</h1>
-        </div>
+        </section>
         <hr>
-        <div class="dados_pessoais">
+        <section class="dados_profissionais">
             <div class="cargo">
-                <h1>Cargo</h1>
-                <input type="text">
+                <h1>Cargo</h1><input type="text">
             </div>
-        </div>
-        <div class="perfil">
+        </section>
+
+        <section class="perfil">
             <div class="foto">
-                <input type="image" src="icone_usuario.png" alt="foto de perfil">
+                <img src="icone_usuario.png" alt="foto de perfil">
             </div>
             <div class="textos">
                 <h1>Foto de Perfil</h1>
                 <input type="button" value="Escolher arquivo" class="botao">
                 <input type="button" value="Cadastrar" class="cadastrar">
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const comandos = document.getElementById("comandos");
+            const content = document.getElementById("content");
+            const abrir = document.getElementById("abrir");
+            const fechar = document.getElementById("fechar");
+            let sideBar = false;
+
+            abrir.addEventListener("click", () => {
+                comandos.classList.toggle("sidebar-ativa");
+                content.classList.toggle("blur");
+                sideBar = !sideBar;
+            });
+
+            fechar.addEventListener("click", () => {
+                comandos.classList.remove("sidebar-ativa");
+                content.classList.remove("blur");
+                sideBar = false;
+            });
+
+            content.addEventListener("click", () => {
+                if (sideBar) {
+                    comandos.classList.remove("sidebar-ativa");
+                    content.classList.remove("blur");
+                    sideBar = false;
+                }
+            });
+
+            window.addEventListener("resize", () => {
+                if (window.innerWidth > 768) {
+                    comandos.classList.remove("sidebar-ativa");
+                    content.classList.remove("blur");
+                    fechar.style.display = "none";
+                } else {
+                    fechar.style.display = "";
+                }
+            });
+        });
+    </script>
 </body>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function (){
-    var header = document.getElementById("header");
-    var comandos = document.getElementById("comandos");
-    var content = document.getElementById("content");
-    var fechar = document.getElementById("fechar");
-    var sideBar = false;
-
-    window.toggleSideBar = function () {
-      sideBar = !sideBar;
-      if (sideBar) {
-        fechar.style.display = "block";
-        comandos.style.display = "flex";
-        content.style.filter = "blur(2px)";
-        comandos.style.position = "absolute"; 
-        comandos.style.left = "0vw";
-        comandos.style.flexDirection = "column";
-        comandos.style.top = "0";
-        comandos.style.backgroundColor = "#222629";
-        comandos.style.height = "100%";
-        comandos.style.width = "30vw";
-        comandos.style.padding = "1em";
-        comandos.style.animationName = "mostraSideBar";
-        comandos.style.animationDuration = "0.5s";
-        comandos.style.transition = "0.5s";
-      } else {
-        comandos.style.display = "none";
-        content.style.filter = "blur(0px)";
-      }
-    };
-
-    window.fechaSideBar = function () {
-      if (sideBar) {
-        toggleSideBar();
-      }
-    };
-
-    window.addEventListener("resize", function () {
-        if (window.innerWidth > 768) {
-            fechar.style.display = "none";
-            comandos.style.display = ""; 
-            comandos.style.flexDirection = "row";
-            comandos.style.position = "relative"; 
-            comandos.style.left = "";
-            comandos.style.top = "";
-            comandos.style.backgroundColor = "";
-            comandos.style.height = "";
-            comandos.style.width = "";
-            comandos.style.padding = "";
-            comandos.style.animationDuration = "";
-            comandos.style.transition = "";
-        } else {
-            if (sideBar) toggleSideBar();
-                comandos.style.display = ""; 
-        }
-    });
-  });
-</script>
 
 </html>
