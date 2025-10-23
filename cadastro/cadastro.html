@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@200;500&display=swap');
 
         :root {
             --cor-fundo: #373F46;
@@ -19,6 +19,7 @@
             margin: 0;
             padding: 0;
             font-family: "League Spartan", sans-serif;
+            font-weight: 500;
         }
 
         body {
@@ -146,10 +147,11 @@
         .dados_pessoais,
         .dados_profissionais {
             display: flex;
-            flex-direction: row;
-            gap: 3em;
-            margin-top: 3em;
+            flex-flow: row wrap;
+            gap: 2.5em;
+            margin-top: 2em;
             padding-left: 3em;
+            
         }
 
         .titulo_dado {
@@ -158,14 +160,17 @@
             margin-left: 1em;
         }
 
-        .dado,
-        .cargo {
+        .dado {
             flex-direction: column;
+            align-items: baseline;
             margin-bottom: 1em;
             display: flex;
-            font-size: small;
+            
         }
-
+        .dado h1 {
+            font-weight: 200 !important;
+            font-size: 1rem;
+        }
         .perfil {
             display: flex;
             margin-top: 1em;
@@ -245,7 +250,7 @@
         </section>
         <hr>
         <section class="dados_profissionais">
-            <div class="cargo">
+            <div class="dado">
                 <h1>Cargo</h1><input type="text">
             </div>
         </section>
