@@ -134,9 +134,9 @@
             padding: 1em;
             animation: mostraSideBar 0.5s;
             transition: 0.5s;
-    
+
             .fechar {
-                display:block
+                display: block
             }
         }
 
@@ -151,7 +151,7 @@
             gap: 2.5em;
             margin-top: 2em;
             padding-left: 3em;
-            
+
         }
 
         .titulo_dado {
@@ -165,12 +165,47 @@
             align-items: baseline;
             margin-bottom: 1em;
             display: flex;
-            
+            gap: 4px;
+
         }
+
         .dado h1 {
             font-weight: 200 !important;
-            font-size: 1rem;
+            font-size: 1.2rem;
+            padding-left: 5px;
         }
+
+        .dado input {
+            width: 220px;
+            height: 35px;
+            padding: 8px 12px 5px;
+            font-size: 0.95rem;
+            border: 2px solid #4b4b4b;
+            border-radius: 6px;
+            background-color: #2f353b;
+            color: var(--cor-texto);
+            transition: all 0.3s ease;
+        }
+
+        
+        .dado input:hover {
+            border-color: var(--cor-nexos);
+        }
+
+        
+        .dado input:focus {
+            outline: none;
+            border-color: var(--cor-nexos);
+            box-shadow: 0 0 6px #26a5ee70;
+            background-color: #353c43;
+        }
+
+        
+        .dado input::placeholder {
+            color: #a9a9a9;
+            font-weight: 200;
+        }
+
         .perfil {
             display: flex;
             margin-top: 1em;
@@ -229,19 +264,22 @@
         <hr>
         <section class="dados_pessoais">
             <div class="dado">
-                <h1>Nome</h1><input type="text">
+                <h1>Nome</h1><input type="text" placeholder="Nome...">
             </div>
             <div class="dado">
-                <h1>Sobrenome</h1><input type="text">
+                <h1>Sobrenome</h1><input type="text" placeholder="Sobrenome...">
             </div>
             <div class="dado">
-                <h1>Data de Nascimento</h1><input type="text">
+                <h1>Data de Nascimento</h1><input type="text" placeholder="dd/mm/yyyy">
             </div>
             <div class="dado">
-                <h1>CPF</h1><input type="text">
+                <h1>CPF</h1><input type="text" placeholder="000.000.000-00">
             </div>
             <div class="dado">
-                <h1>Endereço</h1><input type="text">
+                <h1>CEP</h1><input type="text" placeholder="00000-000">
+            </div>
+            <div class="dado">
+                <h1>Endereço</h1><input type="text" placeholder="000, Rua x, vou alterar dps">
             </div>
         </section>
 
@@ -251,7 +289,7 @@
         <hr>
         <section class="dados_profissionais">
             <div class="dado">
-                <h1>Cargo</h1><input type="text">
+                <h1>Cargo</h1><input type="text" placeholder="vou mudar">
             </div>
         </section>
 
