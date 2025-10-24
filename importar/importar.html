@@ -76,6 +76,10 @@
             right: 1.5em;
         }
 
+        .span_header {
+            font-size: 1.22rem;
+        }
+
         .img_logo {
             margin-left: -20px;
             width: 135px;
@@ -90,7 +94,7 @@
         }
 
         .comandos a {
-            color: white;
+            color: var(--cor-texto);
             text-decoration: none;
             text-align: center;
             transition: 1s;
@@ -123,7 +127,7 @@
         .icone_lista {
             background-color: transparent;
             border: none;
-            color: white;
+            color: var(--cor-texto);
             cursor: pointer;
             display: none;
         }
@@ -193,10 +197,30 @@
             height: 35px;
             border-radius: 5px;
             margin-left: 0.7em;
+            border: none;
+        }
+
+        .botao {
+            background-color: #444;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            line-height: 35px;
+        }
+
+        .botao:hover {
+            background-color: #555;
         }
 
         .enviar {
-            background-color: #26a5ee;
+            background-color: var(--cor-nexos);
+            color: white;
+            cursor: pointer;
+        }
+
+        #nomeArquivo {
+            margin-top: 10px;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -219,22 +243,99 @@
                         d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708 .708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                 </svg>
             </button>
-            <a href="" class="active"><span class="span_header">Importar</span></a>
+            <a href="#"><span class="span_header">Home</span></a>
+            <a href="#" class="active"><span class="span_header">Importar</span></a>
             <a href="#"><span class="span_header">Programação</span></a>
             <a href="#"><span class="span_header">Gerenciamento</span></a>
-            <a href="/cadastro/cadastro.html    "><span class="span_header">Cadastro</span></a>
-        </nav>
+            <a href="/cadastro/cadastro.html"><span class="span_header">Cadastro</span></a>
+        </section>
         <div class="foto_perfil">
             <a href="#"><img src="icone_usuario.png" alt="usuario" class="icon_usuario"></a>
         </div>
-    </header>
+    </section>
+
     <div tabindex="0" onclick="fechaSideBar()" class="content" id="content">
         <section class="textos">
             <h2>Importar Arquivos</h2>
-            <input type="button" value="Escolher arquivos" class="botao">
+
+            <input type="file" id="arquivo" style="display:none" multiple>
+            <label for="arquivo" class="botao">Escolher arquivos</label>
+
             <input type="button" value="Enviar" class="enviar">
+
+            <p id="nomeArquivo">Nenhum arquivo selecionado.</p>
         </section>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var header = document.getElementById("header");
+            var comandos = document.getElementById("comandos");
+            var content = document.getElementById("content");
+            var sideBar = false;
+
+            window.toggleSideBar = function () {
+                sideBar = !sideBar;
+                if (sideBar) {
+                    comandos.style.display = "flex";
+                    content.style.filter = "blur(2px)";
+                    comandos.style.position = "absolute";
+                    comandos.style.left = "0vw";
+                    comandos.style.flexDirection = "column";
+                    comandos.style.top = "0";
+                    comandos.style.backgroundColor = "#222629";
+                    comandos.style.height = "100%";
+                    comandos.style.width = "30vw";
+                    comandos.style.padding = "1em";
+                    comandos.style.animationName = "mostraSideBar";
+                    comandos.style.animationDuration = "0.5s";
+                    comandos.style.transition = "0.5s";
+                } else {
+                    comandos.style.display = "none";
+                    content.style.filter = "blur(0px)";
+                }
+            };
+
+            window.fechaSideBar = function () {
+                if (sideBar) {
+                    toggleSideBar();
+                }
+            };
+
+            window.addEventListener("resize", function () {
+                if (window.innerWidth > 768) {
+                    if (sideBar) {
+                        toggleSideBar();
+                    }
+                    comandos.style.display = "flex";
+                    comandos.style.flexDirection = "row";
+                    comandos.style.position = "relative";
+                    comandos.style.left = "";
+                    comandos.style.top = "";
+                    comandos.style.backgroundColor = "";
+                    comandos.style.height = "";
+                    comandos.style.width = "";
+                    comandos.style.padding = "";
+                    comandos.style.animationDuration = "";
+                    comandos.style.transition = "";
+                }
+                if (window.innerWidth <= 768) {
+                    if (sideBar)
+                        toggleSideBar();
+                }
+            });
+
+            document.getElementById('arquivo').addEventListener('change', function () {
+                const nomeArquivo = document.getElementById('nomeArquivo');
+                if (this.files.length > 0) {
+                    const nomes = Array.from(this.files).map(f => f.name).join(', ');
+                    nomeArquivo.textContent = "Arquivos selecionados: " + nomes;
+                } else {
+                    nomeArquivo.textContent = "Nenhum arquivo selecionado.";
+                }
+            });
+        });
+    </script>
 </body>
 
 <script>
