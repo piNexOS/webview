@@ -5,13 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@200;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;500&display=swap');
 
         :root {
             --cor-fundo: #373F46;
             --cor-header: #272C2F;
             --cor-nexos: #26a5ee;
+            --cor-nexosdark:rgb(17, 136, 206);
             --cor-texto: #fff;
         }
 
@@ -20,11 +22,34 @@
             padding: 0;
             font-family: "League Spartan", sans-serif;
             font-weight: 500;
+
+        }
+        ::-webkit-scrollbar {
+            background-color: var(--cor-header);
+            color: #000000;
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background-color: #181a1b;
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background-color: #000000;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--cor-nexos);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--cor-nexosdark);
         }
 
         body {
             background-color: var(--cor-fundo);
             color: var(--cor-texto);
+            min-height: 100vh;
         }
 
         hr {
@@ -37,12 +62,13 @@
 
         header {
             background-color: var(--cor-header);
-            box-shadow: 1px 1px 2px black;
+            box-shadow: 0 -2px 8px var(--cor-nexosdark);
             height: 4em;
             padding-left: 1.5em;
             display: flex;
             align-items: center;
             gap: 1em;
+
         }
 
         .foto_perfil {
@@ -82,10 +108,16 @@
         }
 
         .content {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: 5em;
             text-align: center;
-            padding: 2em 3em;
-            height: 70vh;
+            padding: 2em 2em;
             transition: 1s;
+        }
+
+        .span_header {
+            font-size: 1.3rem;
         }
 
         .icone_lista {
@@ -97,8 +129,13 @@
         }
 
         @keyframes mostraSideBar {
-            from { left: -35vw; }
-            to { left: 0; }
+            from {
+                left: -35vw;
+            }
+
+            to {
+                left: 0;
+            }
         }
 
         @media screen and (max-width: 768px) {
@@ -132,8 +169,8 @@
             height: 100%;
             width: 30vw;
             padding: 1em;
-            animation: mostraSideBar 0.5s;
-            transition: 0.5s;
+            animation: mostraSideBar 0.4s;
+            transition: 0.4s;
 
             .fechar {
                 display: block
@@ -144,8 +181,7 @@
             filter: blur(2px);
         }
 
-        .dados_pessoais,
-        .dados_profissionais {
+        .area_dados{
             display: flex;
             flex-flow: row wrap;
             gap: 2.5em;
@@ -154,9 +190,8 @@
 
         }
 
-        .titulo_dado {
+        .area_titulo {
             display: flex;
-            margin-top: 2em;
             margin-left: 1em;
         }
 
@@ -170,29 +205,31 @@
         }
 
         .dado h1 {
-            font-weight: 200 !important;
+            font-weight: 300 !important;
             font-size: 1.2rem;
-            padding-left: 5px;
+            padding-left: 10px;
         }
+
 
         .dado input {
             width: 220px;
             height: 35px;
-            padding: 8px 12px 5px;
-            font-size: 0.95rem;
+            padding: 8px 12px 7px;
+            font-size: 1.1rem;
             border: 2px solid #4b4b4b;
             border-radius: 6px;
             background-color: #2f353b;
             color: var(--cor-texto);
             transition: all 0.3s ease;
+            font-weight: 300 !important;
         }
 
-        
+
         .dado input:hover {
             border-color: var(--cor-nexos);
         }
 
-        
+
         .dado input:focus {
             outline: none;
             border-color: var(--cor-nexos);
@@ -200,15 +237,15 @@
             background-color: #353c43;
         }
 
-        
+
         .dado input::placeholder {
             color: #a9a9a9;
             font-weight: 200;
+            font-size: 1.1rem;
         }
 
         .perfil {
             display: flex;
-            margin-top: 1em;
             gap: 3em;
         }
 
@@ -216,11 +253,24 @@
             margin-left: 1em;
         }
 
+        .textos {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+        }
+
+        .foto {
+            margin-left: 1em;
+            width: 150px;
+            height: auto;
+        }
+
         .botao,
         .cadastrar {
-            width: 100px;
-            height: 30px;
+            width: 145px;
+            height: 35px;
             border-radius: 5px;
+            margin-left: 0.7em;
         }
 
         .cadastrar {
@@ -247,10 +297,10 @@
                         d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                 </svg>
             </button>
-            <a href="#">Importar</a>
-            <a href="#">Programação</a>
-            <a href="#">Gerenciamento</a>
-            <a href="#" class="active">Cadastro</a>
+            <a href="/importar/importar.html"><span class="span_header">Importar</span></a>
+            <a href="#"><span class="span_header">Programação</span></a>
+            <a href="#"><span class="span_header">Gerenciamento</span></a>
+            <a href="#" class="active"><span class="span_header">Cadastro</span></a>
         </nav>
         <div class="foto_perfil">
             <a href="#"><img src="icone_usuario.png" alt="usuario" class="icon_usuario"></a>
@@ -258,44 +308,52 @@
     </header>
 
     <main class="content" id="content">
-        <section class="titulo_dado">
-            <h1>Dados Pessoais</h1>
-        </section>
-        <hr>
-        <section class="dados_pessoais">
-            <div class="dado">
-                <h1>Nome</h1><input type="text" placeholder="Nome...">
-            </div>
-            <div class="dado">
-                <h1>Sobrenome</h1><input type="text" placeholder="Sobrenome...">
-            </div>
-            <div class="dado">
-                <h1>Data de Nascimento</h1><input type="text" placeholder="dd/mm/yyyy">
-            </div>
-            <div class="dado">
-                <h1>CPF</h1><input type="text" placeholder="000.000.000-00">
-            </div>
-            <div class="dado">
-                <h1>CEP</h1><input type="text" placeholder="00000-000">
-            </div>
-            <div class="dado">
-                <h1>Endereço</h1><input type="text" placeholder="000, Rua x, vou alterar dps">
-            </div>
+        <section class="area">
+            <section class="area_titulo">
+                <h1>Dados Pessoais</h1>
+            </section>
+            <hr>
+            <section class="area_dados">
+                <div class="dado">
+                    <h1>Nome</h1><input type="text" placeholder="Nome...">
+                </div>
+                <div class="dado">
+                    <h1>Sobrenome</h1><input type="text" placeholder="Sobrenome...">
+                </div>
+                <div class="dado">
+                    <h1>Data de Nascimento</h1><input type="text" placeholder="dd/mm/yyyy">
+                </div>
+                <div class="dado">
+                    <h1>CPF</h1><input type="text" placeholder="000.000.000-00">
+                </div>
+                <div class="dado">
+                    <h1>CEP</h1><input type="text" placeholder="00000-000">
+                </div>
+                <div class="dado">
+                    <h1>Endereço</h1><input type="text" placeholder="000, Rua x, vou alterar dps">
+                </div>
+            </section>
         </section>
 
-        <section class="titulo_dado">
-            <h1>Dados Profissionais</h1>
-        </section>
-        <hr>
-        <section class="dados_profissionais">
-            <div class="dado">
-                <h1>Cargo</h1><input type="text" placeholder="vou mudar">
-            </div>
+        <section class="area">
+            <section class="area_titulo">
+                <h1>Dados Profissionais</h1>
+            </section>
+            <hr>
+            <section class="area_dados">
+                <div class="dado">
+                    <h1>Cargo</h1><input type="text" placeholder="vou mudar">
+                </div>
+            </section>
         </section>
 
         <section class="perfil">
             <div class="foto">
-                <img src="icone_usuario.png" alt="foto de perfil">
+                <svg xmlns="http://www.w3.org/2000/svg" width="120px" height="120px" viewBox="0 -960 960 960"
+                    width="24px" fill="#e3e3e3">
+                    <path
+                        d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z" />
+                </svg>
             </div>
             <div class="textos">
                 <h1>Foto de Perfil</h1>

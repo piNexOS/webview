@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importação de Serviços</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300&display=swap');
+
+         * {
+            margin: 0;
+            padding: 0;
+            font-family: "League Spartan";
+        }
+
+        body {
+            background-color: #373F46;
+            color: white;
+        }
+
+        h2{
+            display: flex;
+            margin-top: 1em;
+        }
+
+        .league-spartan {
+        font-family: "League Spartan", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-style: normal;
+        }
+
+        .img_logo {
+            width: 100px;
+        }
+
+        .header,
+        .comandos {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .header {
+            background-color: #272C2F;
+            box-shadow: 1px 1px 2px black;
+            height: 4em;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+        .comandos {
+            gap: 3em;
+            z-index: 9999;
+        }
+
+        .comandos a {
+            color: white;
+            text-decoration: none;
+            transition: 1s;
+            font-weight: bold;
+        }
+
+        .active {
+            background-color: rgb(78, 78, 78);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .icon_usuario {
+            width: 30px;
+        }
+
+        .content {
+            padding: 2em 3em;
+            height: 70vh;
+            transition: 1s;
+        }
+
+        .icone_lista {
+            background-color: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: none;
+        }
+
+        @keyframes mostraSideBar{
+        from {left: -35vw}
+        top {left: 0vw;}
+        }
+
+        @media screen and (max-width: 768px) {
+            .icone_lista {
+                display: block;
+            }
+
+            .comandos {
+                display: none;
+            }
+        }
+
+        @media screen and (min-width: 769px) {
+        .comandos {
+            display: flex;
+            flex-direction: row;
+        }
+        }
+
+        .textos{
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+        }
+
+        .botao, .enviar{
+            width: 145px;
+            height: 35px;
+            border-radius: 5px;
+            margin-left: 0.7em;
+        }
+
+        .enviar{
+            background-color: #26a5ee;
+        }
+
+    </style>
+</head>
+<body>
+     <section class="header" id="header">
+        <button onclick="toggleSideBar()" class="icone_lista">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+            </svg>
+        </button>
+        <div class="logo">
+            <img src="LogoNexos.png" class="img_logo" alt="Logo NexOS">
+        </div>
+        <section class="comandos" id="comandos">
+            <button onclick="toggleSideBar()" class="icone_lista">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                </svg>
+            </button>
+            <a href="#" class="active">Importar</a>
+            <a href="#">Programação</a>
+            <a href="#">Gerenciamento</a>
+            <a href="/cadastro/cadastro.html">Cadastro</a>
+        </section>
+        <div class="foto_perfil">
+            <a href="#"><img src="icone_usuario.png" alt="usuario" class="icon_usuario"></a>
+        </div>
+     </section>
+    <div tabindex="0" onclick="fechaSideBar()" class="content" id="content">
+        <section class="textos">
+            <h2>Importar Arquivos</h2>
+            <input type="button" value="Escolher arquivos" class="botao">
+            <input type="button" value="Enviar" class="enviar">
+        </section>
+    </div>
+</body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function (){
+    var header = document.getElementById("header");
+    var comandos = document.getElementById("comandos");
+    var content = document.getElementById("content");
+    var sideBar = false;
+
+    window.toggleSideBar = function () {
+      sideBar = !sideBar;
+      if (sideBar) {
+        comandos.style.display = "flex";
+        content.style.filter = "blur(2px)";
+        comandos.style.position = "absolute"; 
+        comandos.style.left = "0vw";
+        comandos.style.flexDirection = "column";
+        comandos.style.top = "0";
+        comandos.style.backgroundColor = "#222629";
+        comandos.style.height = "100%";
+        comandos.style.width = "30vw";
+        comandos.style.padding = "1em";
+        comandos.style.animationName = "mostraSideBar";
+        comandos.style.animationDuration = "0.5s";
+        comandos.style.transition = "0.5s";
+      } else {
+        comandos.style.display = "none";
+        content.style.filter = "blur(0px)";
+      }
+    };
+
+    window.fechaSideBar = function () {
+      if (sideBar) {
+        toggleSideBar();
+      }
+    };
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 768) {
+        if(sideBar){
+            toggleSideBar();
+            alert("ooo")
+        };
+        comandos.style.display = "flex";
+        comandos.style.flexDirection = "row";
+        comandos.style.position = "relative"; 
+        comandos.style.left = "";
+        comandos.style.top = "";
+        comandos.style.backgroundColor = "";
+        comandos.style.height = "";
+        comandos.style.width = "";
+        comandos.style.padding = "";
+        comandos.style.animationDuration = "";
+        comandos.style.transition = "";
+      } if (window.innerWidth <= 768) {
+        if(sideBar)
+            toggleSideBar();
+      };
+    });
+
+  });
+</script>
+</html>
