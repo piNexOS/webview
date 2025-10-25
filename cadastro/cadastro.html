@@ -71,7 +71,7 @@
             gap: 1em;
             position: relative;
             z-index: 4;
-            /* acima do canvas e do conteúdo */
+
         }
 
         .foto_perfil {
@@ -110,15 +110,15 @@
             width: 30px;
         }
 
-        /* main e canvas */
+
         main {
             position: relative;
-            /* necessário para o canvas absoluto dentro dele */
+
             width: 100%;
             min-height: calc(100vh - 4em);
-            /* espaço abaixo do header */
+
             background: transparent;
-            /* para permitir ver o canvas */
+
             overflow: hidden;
         }
 
@@ -383,7 +383,6 @@
             background-color: var(--cor-nexos);
         }
 
-        /* menor responsividade para conteúdo */
         @media (max-width: 900px) {
             .area_dados {
                 padding-left: 1em;
@@ -403,7 +402,7 @@
 <body>
     <header id="header">
         <button class="icone_lista" id="abrir" aria-label="Abrir menu">
-            <!-- ícone -->
+
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
                     d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
@@ -430,10 +429,10 @@
     </header>
 
     <main id="main">
-        <!-- Canvas das partículas: primeiro elemento dentro do main -->
+
         <canvas id="particlesCanvas" aria-hidden="true"></canvas>
 
-        <!-- Conteúdo (mantive sua estrutura original dentro da .content) -->
+
         <div class="content" id="content">
             <section class="area">
                 <section class="area_titulo">
@@ -499,9 +498,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            /* -------------------------
-                           Sidebar / UI interactions
-                                          ------------------------- */
+
             const comandos = document.getElementById("comandos");
             const content = document.getElementById("content");
             const abrir = document.getElementById("abrir");
@@ -543,13 +540,11 @@
                     if (fechar) fechar.style.display = "";
                 }
 
-                // redimensiona o canvas também (função definida mais abaixo)
+
                 resizeCanvasToMain();
             });
 
-            /* -------------------------
-                           Preview de imagem
-                                          ------------------------- */
+
             const botaoEscolher = document.getElementById('botaoEscolherArquivo');
             const inputFoto = document.getElementById('fotoInput');
             const fotoContainer = document.getElementById('fotoContainer');
@@ -582,9 +577,7 @@
                 });
             }
 
-            /* -------------------------
-                           Máscaras (com guard) 
-                                          ------------------------- */
+
             const cpfEl = document.getElementById('cpf');
             if (cpfEl) {
                 cpfEl.addEventListener('input', function (e) {
@@ -615,9 +608,7 @@
                 });
             }
 
-            /* -------------------------
-                           Enter para pular campos
-                                          ------------------------- */
+
             const focusableElements = document.querySelectorAll(
                 '.dado input, .campo select, .perfil .botao, .perfil .cadastrar'
             );
@@ -638,9 +629,7 @@
                 });
             }
 
-            /* -------------------------
-                           Animação do placeholder (matrícula)
-                                          ------------------------- */
+
             const input = document.getElementById("matricula");
             const mensagemBase = "Escreva a matrícula aqui";
             const pontuacoes = [".", "..", "..."];
@@ -674,14 +663,12 @@
 
             digitarTexto();
 
-            /* -------------------------
-                           Canvas de partículas
-                                          ------------------------- */
+
             const canvas = document.getElementById("particlesCanvas");
             if (!canvas) return; // segurança
             const ctx = canvas.getContext("2d");
 
-            // ajusta canvas para a área do main, com devicePixelRatio para ficar nítido
+
             function resizeCanvasToMain() {
                 const main = document.getElementById('main');
                 const dpr = window.devicePixelRatio || 1;
@@ -691,7 +678,7 @@
                 canvas.style.height = h + 'px';
                 canvas.width = Math.floor(w * dpr);
                 canvas.height = Math.floor(h * dpr);
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // facilita desenhar em CSS pixels
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             }
 
             resizeCanvasToMain();
@@ -717,7 +704,7 @@
                     this.areaH = areaH || this.areaH;
                     this.x += this.speedX;
                     this.y += this.speedY;
-                    // bounce
+
                     if (this.x < 0) { this.x = 0; this.speedX *= -1; }
                     if (this.x > this.areaW) { this.x = this.areaW; this.speedX *= -1; }
                     if (this.y < 0) { this.y = 0; this.speedY *= -1; }
@@ -733,7 +720,7 @@
 
             const particles = [];
             const particleCount = 60;
-            // inicializar com base no tamanho atual (em CSS pixels)
+
             function initParticles() {
                 particles.length = 0;
                 const main = document.getElementById('main');
@@ -744,7 +731,7 @@
 
             initParticles();
 
-            // reconstrói partículas se redimensionar muito
+
             let lastResize = Date.now();
             window.addEventListener('resize', () => {
                 const now = Date.now();
@@ -777,14 +764,14 @@
             }
 
             function animate() {
-                // limpa com leve Transparência para trail suave (ou use clearRect para sem traço)
+
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                // todas as medidas de desenho estão no sistema de CSS pixels por conta do setTransform
+
                 const main = document.getElementById('main');
                 const w = main ? main.clientWidth : window.innerWidth;
                 const h = main ? main.clientHeight : window.innerHeight;
 
-                // atualiza e desenha
+
                 for (let p of particles) {
                     p.update(w, h);
                     p.draw(ctx);
@@ -795,8 +782,7 @@
 
             animate();
 
-            /* ---- opcional: interação com mouse para efeito extra ---- */
-            // segure a posição do mouse e crie uma leve atração
+
             let mouse = { x: null, y: null };
             window.addEventListener('mousemove', (e) => {
                 const mainRect = document.getElementById('main').getBoundingClientRect();
@@ -805,7 +791,7 @@
             });
             window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
 
-            // aplicar atração suave nas partículas (não obrigatório)
+
             function applyMouseAttraction() {
                 if (!mouse.x || !mouse.y) return;
                 for (let p of particles) {
@@ -819,11 +805,9 @@
                     }
                 }
             }
-            // chamar atração a cada frame integrando em animate:
-            // altere animate para chamar applyMouseAttraction antes do connectParticles.
-            // (para simplicidade não reescrevi, mas você pode trocar no futuro).
 
-        }); /* end DOMContentLoaded */
+
+        }); 
     </script>
 </body>
 
