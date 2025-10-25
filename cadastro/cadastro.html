@@ -21,6 +21,7 @@
             padding: 0;
             font-family: "League Spartan", sans-serif;
             font-weight: 500;
+            box-sizing: border-box;
         }
 
         ::-webkit-scrollbar {
@@ -46,9 +47,10 @@
         }
 
         body {
+            min-height: 100vh;
             background: linear-gradient(15deg, rgba(41, 41, 41, 1) -100%, rgba(58, 66, 72, 1) 70%);
             color: var(--cor-texto);
-            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         hr {
@@ -67,6 +69,9 @@
             display: flex;
             align-items: center;
             gap: 1em;
+            position: relative;
+            z-index: 4;
+            /* acima do canvas e do conteúdo */
         }
 
         .foto_perfil {
@@ -105,7 +110,34 @@
             width: 30px;
         }
 
+        /* main e canvas */
+        main {
+            position: relative;
+            /* necessário para o canvas absoluto dentro dele */
+            width: 100%;
+            min-height: calc(100vh - 4em);
+            /* espaço abaixo do header */
+            background: transparent;
+            /* para permitir ver o canvas */
+            overflow: hidden;
+        }
+
+        #particlesCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            /* atrás do conteúdo */
+            display: block;
+        }
+
+        /* conteúdo acima do canvas */
         .content {
+            position: relative;
+            z-index: 2;
+            /* acima do canvas */
             display: flex;
             flex-flow: column nowrap;
             gap: 5em;
@@ -157,7 +189,6 @@
             }
         }
 
-        /* CORREÇÃO: seletor válido para o botão fechar quando a sidebar está ativa */
         .comandos.sidebar-ativa {
             display: flex;
             position: absolute;
@@ -352,20 +383,19 @@
             background-color: var(--cor-nexos);
         }
 
-        main {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            background: #0d0d1a;
-            overflow: hidden;
-        }
-        
+        /* menor responsividade para conteúdo */
+        @media (max-width: 900px) {
+            .area_dados {
+                padding-left: 1em;
+            }
 
-        #particlesCanvas {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+            .dado input {
+                width: 180px
+            }
 
+            .campo {
+                width: 200px;
+            }
         }
     </style>
 </head>
@@ -399,8 +429,12 @@
         </div>
     </header>
 
-        <main class="content" id="content">
+    <main id="main">
+        <!-- Canvas das partículas: primeiro elemento dentro do main -->
+        <canvas id="particlesCanvas" aria-hidden="true"></canvas>
 
+        <!-- Conteúdo (mantive sua estrutura original dentro da .content) -->
+        <div class="content" id="content">
             <section class="area">
                 <section class="area_titulo">
                     <h1>Dados Pessoais</h1>
@@ -429,7 +463,6 @@
                             <span class="focus"></span>
                         </div>
                     </div>
-                    <!-- inputs comentados anteriormente permanecem comentados -->
                 </section>
             </section>
 
@@ -456,62 +489,74 @@
                 </div>
                 <div class="textos">
                     <h1>Foto de Perfil</h1>
-                    <input type="file" id="fotoInput" accept="image/*" style="display: none;" />
+                    <input type="file" id="fotoInput" accept="image/*" style="display:none" />
                     <input type="button" value="Escolher arquivo" class="botao" id="botaoEscolherArquivo" />
                     <input type="button" value="Cadastrar" class="cadastrar" />
                 </div>
             </section>
-        
+        </div>
     </main>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            /* -------------------------
+                           Sidebar / UI interactions
+                                          ------------------------- */
             const comandos = document.getElementById("comandos");
             const content = document.getElementById("content");
             const abrir = document.getElementById("abrir");
             const fechar = document.getElementById("fechar");
             let sideBar = false;
 
-            abrir.addEventListener("click", () => {
-                comandos.classList.toggle("sidebar-ativa");
-                content.classList.toggle("blur");
-                sideBar = !sideBar;
-            });
+            if (abrir) {
+                abrir.addEventListener("click", () => {
+                    if (comandos) comandos.classList.toggle("sidebar-ativa");
+                    if (content) content.classList.toggle("blur");
+                    sideBar = !sideBar;
+                });
+            }
 
-            fechar.addEventListener("click", () => {
-                comandos.classList.remove("sidebar-ativa");
-                content.classList.remove("blur");
-                sideBar = false;
-            });
-
-            content.addEventListener("click", () => {
-                if (sideBar) {
-                    comandos.classList.remove("sidebar-ativa");
-                    content.classList.remove("blur");
+            if (fechar) {
+                fechar.addEventListener("click", () => {
+                    if (comandos) comandos.classList.remove("sidebar-ativa");
+                    if (content) content.classList.remove("blur");
                     sideBar = false;
-                }
-            });
+                });
+            }
+
+            if (content) {
+                content.addEventListener("click", () => {
+                    if (sideBar && comandos) {
+                        comandos.classList.remove("sidebar-ativa");
+                        content.classList.remove("blur");
+                        sideBar = false;
+                    }
+                });
+            }
 
             window.addEventListener("resize", () => {
-                if (window.innerWidth > 768) {
+                if (window.innerWidth > 768 && comandos) {
                     comandos.classList.remove("sidebar-ativa");
-                    content.classList.remove("blur");
-                    fechar.style.display = "none";
+                    if (content) content.classList.remove("blur");
+                    if (fechar) fechar.style.display = "none";
                 } else {
-                    fechar.style.display = "";
+                    if (fechar) fechar.style.display = "";
                 }
+
+                // redimensiona o canvas também (função definida mais abaixo)
+                resizeCanvasToMain();
             });
 
-            // preview de imagem
+            /* -------------------------
+                           Preview de imagem
+                                          ------------------------- */
             const botaoEscolher = document.getElementById('botaoEscolherArquivo');
             const inputFoto = document.getElementById('fotoInput');
             const fotoContainer = document.getElementById('fotoContainer');
             const profileImageDefault = document.getElementById('profileImageDefault');
 
             if (botaoEscolher && inputFoto && fotoContainer && profileImageDefault) {
-                botaoEscolher.addEventListener('click', () => {
-                    inputFoto.click();
-                });
+                botaoEscolher.addEventListener('click', () => inputFoto.click());
 
                 inputFoto.addEventListener('change', () => {
                     if (inputFoto.files && inputFoto.files.length > 0) {
@@ -525,12 +570,9 @@
                                 previewImage = document.createElement('img');
                                 previewImage.id = 'profileImagePreview';
                                 previewImage.alt = 'Foto de Perfil';
-
                                 profileImageDefault.style.display = 'none';
-
                                 fotoContainer.appendChild(previewImage);
                             }
-
                             previewImage.src = e.target.result;
                         };
 
@@ -540,7 +582,9 @@
                 });
             }
 
-
+            /* -------------------------
+                           Máscaras (com guard) 
+                                          ------------------------- */
             const cpfEl = document.getElementById('cpf');
             if (cpfEl) {
                 cpfEl.addEventListener('input', function (e) {
@@ -571,30 +615,32 @@
                 });
             }
 
+            /* -------------------------
+                           Enter para pular campos
+                                          ------------------------- */
             const focusableElements = document.querySelectorAll(
                 '.dado input, .campo select, .perfil .botao, .perfil .cadastrar'
             );
             const fields = Array.from(focusableElements);
 
-            content.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter') {
-                    const currentField = e.target;
-                    const currentIndex = fields.indexOf(currentField);
-
-                    if (currentIndex > -1) {
-                        e.preventDefault();
-                        const nextField = fields[currentIndex + 1];
-
-                        if (nextField) {
-                            nextField.focus();
-                        } else if (currentField.classList && currentField.classList.contains('cadastrar')) {
-                            currentField.click();
+            if (content) {
+                content.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        const currentField = e.target;
+                        const currentIndex = fields.indexOf(currentField);
+                        if (currentIndex > -1) {
+                            e.preventDefault();
+                            const nextField = fields[currentIndex + 1];
+                            if (nextField) nextField.focus();
+                            else if (currentField.classList && currentField.classList.contains('cadastrar')) currentField.click();
                         }
                     }
-                }
-            });
+                });
+            }
 
-
+            /* -------------------------
+                           Animação do placeholder (matrícula)
+                                          ------------------------- */
             const input = document.getElementById("matricula");
             const mensagemBase = "Escreva a matrícula aqui";
             const pontuacoes = [".", "..", "..."];
@@ -626,43 +672,159 @@
                 }, 500);
             }
 
-
             digitarTexto();
 
+            /* -------------------------
+                           Canvas de partículas
+                                          ------------------------- */
             const canvas = document.getElementById("particlesCanvas");
+            if (!canvas) return; // segurança
             const ctx = canvas.getContext("2d");
-            canvas.width = innerWidth;
-            canvas.height = innerHeight;
+
+            // ajusta canvas para a área do main, com devicePixelRatio para ficar nítido
+            function resizeCanvasToMain() {
+                const main = document.getElementById('main');
+                const dpr = window.devicePixelRatio || 1;
+                const w = main ? main.clientWidth : window.innerWidth;
+                const h = main ? main.clientHeight : window.innerHeight;
+                canvas.style.width = w + 'px';
+                canvas.style.height = h + 'px';
+                canvas.width = Math.floor(w * dpr);
+                canvas.height = Math.floor(h * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // facilita desenhar em CSS pixels
+            }
+
+            resizeCanvasToMain();
+            window.addEventListener('resize', resizeCanvasToMain);
+
+            class Particle {
+                constructor(w, h) {
+                    this.areaW = w;
+                    this.areaH = h;
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * (this.areaW || canvas.width);
+                    this.y = Math.random() * (this.areaH || canvas.height);
+                    this.size = Math.random() * 1.3 + 0.6;
+                    this.speedX = (Math.random() - 0.5) * (Math.random() * 0.5 + 0.3);
+                    this.speedY = (Math.random() - 0.5) * (Math.random() * 0.5 + 0.1);
+                    const lightness = 60 + Math.random() * 10; // tons de cinza de 20% a 80%
+                    this.color = `hsl(205, 100%, ${lightness}%)`; // saturação 0% -> cinza
+                }
+                update(areaW, areaH) {
+                    this.areaW = areaW || this.areaW;
+                    this.areaH = areaH || this.areaH;
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    // bounce
+                    if (this.x < 0) { this.x = 0; this.speedX *= -1; }
+                    if (this.x > this.areaW) { this.x = this.areaW; this.speedX *= -1; }
+                    if (this.y < 0) { this.y = 0; this.speedY *= -1; }
+                    if (this.y > this.areaH) { this.y = this.areaH; this.speedY *= -1; }
+                }
+                draw(ctx) {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
 
             const particles = [];
-            for (let i = 0; i < 70; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 3,
-                    speedX: (Math.random() - 0.5) * 0.8,
-                    speedY: (Math.random() - 0.5) * 0.8,
-                });
+            const particleCount = 60;
+            // inicializar com base no tamanho atual (em CSS pixels)
+            function initParticles() {
+                particles.length = 0;
+                const main = document.getElementById('main');
+                const w = main ? main.clientWidth : window.innerWidth;
+                const h = main ? main.clientHeight : window.innerHeight;
+                for (let i = 0; i < particleCount; i++) particles.push(new Particle(w, h));
+            }
+
+            initParticles();
+
+            // reconstrói partículas se redimensionar muito
+            let lastResize = Date.now();
+            window.addEventListener('resize', () => {
+                const now = Date.now();
+                if (now - lastResize > 200) {
+                    lastResize = now;
+                    initParticles();
+                }
+            });
+
+            function connectParticles(ctx, particles) {
+                const maxDist = 110;
+                for (let a = 0; a < particles.length; a++) {
+                    for (let b = a + 1; b < particles.length; b++) {
+                        const pA = particles[a];
+                        const pB = particles[b];
+                        const dx = pA.x - pB.x;
+                        const dy = pA.y - pB.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < maxDist) {
+                            const alpha = 1 - dist / maxDist;
+                            ctx.strokeStyle = `rgba(180,220,255,${alpha * 0.25})`;
+                            ctx.lineWidth = 1 * alpha;
+                            ctx.beginPath();
+                            ctx.moveTo(pA.x, pA.y);
+                            ctx.lineTo(pB.x, pB.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
             }
 
             function animate() {
-                ctx.fillStyle = "rgba(13,13,26,0.2)";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => {
-                    p.x += p.speedX;
-                    p.y += p.speedY;
-                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-                    ctx.fillStyle = "#00bcd4";
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    ctx.fill();
-                });
+                // limpa com leve Transparência para trail suave (ou use clearRect para sem traço)
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // todas as medidas de desenho estão no sistema de CSS pixels por conta do setTransform
+                const main = document.getElementById('main');
+                const w = main ? main.clientWidth : window.innerWidth;
+                const h = main ? main.clientHeight : window.innerHeight;
+
+                // atualiza e desenha
+                for (let p of particles) {
+                    p.update(w, h);
+                    p.draw(ctx);
+                }
+                connectParticles(ctx, particles);
                 requestAnimationFrame(animate);
             }
+
             animate();
-        });
+
+            /* ---- opcional: interação com mouse para efeito extra ---- */
+            // segure a posição do mouse e crie uma leve atração
+            let mouse = { x: null, y: null };
+            window.addEventListener('mousemove', (e) => {
+                const mainRect = document.getElementById('main').getBoundingClientRect();
+                mouse.x = e.clientX - mainRect.left;
+                mouse.y = e.clientY - mainRect.top;
+            });
+            window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+
+            // aplicar atração suave nas partículas (não obrigatório)
+            function applyMouseAttraction() {
+                if (!mouse.x || !mouse.y) return;
+                for (let p of particles) {
+                    const dx = mouse.x - p.x;
+                    const dy = mouse.y - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120 && dist > 0) {
+                        const force = (120 - dist) / 120 * 0.5;
+                        p.x += dx / dist * force;
+                        p.y += dy / dist * force;
+                    }
+                }
+            }
+            // chamar atração a cada frame integrando em animate:
+            // altere animate para chamar applyMouseAttraction antes do connectParticles.
+            // (para simplicidade não reescrevi, mas você pode trocar no futuro).
+
+        }); /* end DOMContentLoaded */
     </script>
 </body>
 
-</html>
+</html>>
