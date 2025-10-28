@@ -291,6 +291,7 @@
 
         select {
             width: 100%;
+            width: 242px;
             height: 52px;
             padding: 10px 14px;
             border: 2px solid #4b4b4b;
@@ -451,7 +452,7 @@
                         <input type="text" id="sobrenome" placeholder="Sobrenome..." />
                     </div>
 
-                    <div class="campo">
+                    <div class="dado">
                         <h1>Cargo</h1>
                         <div class="select-container">
                             <select id="cargo" required>
@@ -716,7 +717,7 @@
                     this.speedX = (Math.random() - 0.5) * (Math.random() * 0.5 + 0.3);
                     this.speedY = (Math.random() - 0.5) * (Math.random() * 0.5 + 0.1);
                     const lightness = 60 + Math.random() * 10;
-                    this.color = `hsl(205, 0%, ${lightness}%)`;
+                    this.color = `hsl(205, 100%, ${lightness}%)`;
                 }
                 update(areaW, areaH) {
                     this.areaW = areaW || this.areaW;
@@ -795,7 +796,7 @@
                     p.update(w, h);
                     p.draw(ctx);
                 }
-                applyMouseAttraction();
+     
                 connectParticles(ctx, particles);
                 requestAnimationFrame(animate);
             }
