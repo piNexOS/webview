@@ -44,13 +44,13 @@
 
         ::-webkit-scrollbar-thumb {
             background-color: var(--cor-nexosdark);
+            border-radius: 8px;
         }
 
         body {
-            min-height: 100vh;
+            height: 100vh;
             background: linear-gradient(15deg, rgba(41, 41, 41, 1) -100%, rgba(58, 66, 72, 1) 70%);
             color: var(--cor-texto);
-            overflow-x: hidden;
         }
 
         hr {
@@ -129,15 +129,12 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            /* atrás do conteúdo */
             display: block;
         }
 
-        /* conteúdo acima do canvas */
         .content {
             position: relative;
             z-index: 2;
-            /* acima do canvas */
             display: flex;
             flex-flow: column nowrap;
             gap: 5em;
@@ -168,7 +165,7 @@
             }
         }
 
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 958px) {
             .icone_lista {
                 display: block;
             }
@@ -182,7 +179,7 @@
             }
         }
 
-        @media screen and (min-width: 769px) {
+        @media screen and (min-width: 959px) {
             .comandos {
                 display: flex;
                 flex-direction: row;
@@ -214,6 +211,7 @@
         .area_dados {
             display: flex;
             flex-flow: row wrap;
+
             gap: 2.5em;
             margin-top: 2em;
             padding-left: 3em;
@@ -239,8 +237,8 @@
         }
 
         .dado input {
-            width: 220px;
-            height: 35px;
+            width: 242px;
+            height: 52px;
             padding: 8px 12px 7px;
             font-size: 1.1rem;
             border: 2px solid #4b4b4b;
@@ -283,7 +281,7 @@
             font-size: 1.2rem;
             padding-left: 10px;
         }
-
+        
         .select-container {
             position: relative;
             width: 100%;
@@ -291,6 +289,7 @@
 
         select {
             width: 100%;
+            width: 242px;
             height: 52px;
             padding: 10px 14px;
             border: 2px solid #4b4b4b;
@@ -349,8 +348,12 @@
         }
 
         .perfil {
+            width:fit-content;
+            margin-left: 3em;
             display: flex;
+            flex-flow: column nowrap;
             gap: 3em;
+
         }
 
         .foto img,
@@ -367,29 +370,38 @@
             gap: 1em;
         }
 
-        .foto {
-            margin-left: 1em;
-        }
 
         .botao,
-        .cadastrar {
-            width: 145px;
-            height: 35px;
-            border-radius: 5px;
-            margin-left: 0.7em;
+        .btn {
+            color: var(--cor-header);
         }
 
-        .cadastrar {
+        .botao{
+            padding: 0.8em 0.8em;
+            font-size: 1.1em;
+            border-radius: 0.8em;
+            background-color: #e1e1e9;
+        }
+
+        .btn {
+            padding: 0.56em 1.3em;
+            font-size: 1.5em;
+            border-radius: 0.5em;
             background-color: var(--cor-nexos);
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 636px) {
             .area_dados {
                 padding-left: 1em;
+                
+            }
+            .perfil {
+                margin-left: 1em;
             }
 
-            .dado input {
-                width: 180px
+            .dado input,
+            #cargo {
+                width: 210px
             }
 
             .campo {
@@ -409,7 +421,7 @@
             </svg>
         </button>
         <div class="logo">
-            <img src="LogoNexos.png" class="img_logo" alt="Logo NexOS" />
+            <img src="/Imagens/LogoNexos.png" class="img_logo" alt="Logo NexOS" />
         </div>
         <nav class="comandos" id="comandos">
             <button class="icone_lista fechar" id="fechar" aria-label="Fechar menu">
@@ -418,13 +430,14 @@
                         d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708 .708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                 </svg>
             </button>
+            <a href="#"><span class="span_header">Home</span></a>
             <a href="/importar/importar.html"><span class="span_header">Importar</span></a>
             <a href="#"><span class="span_header">Programação</span></a>
             <a href="#"><span class="span_header">Gerenciamento</span></a>
             <a href="#" class="active"><span class="span_header">Cadastro</span></a>
         </nav>
         <div class="foto_perfil">
-            <a href="#"><img src="icone_usuario.png" alt="usuario" class="icon_usuario" /></a>
+            <a href="#"><img src="/Imagens/icone_usuario.png" alt="usuario" class="icon_usuario" /></a>
         </div>
     </header>
 
@@ -432,68 +445,69 @@
 
         <canvas id="particlesCanvas" aria-hidden="true"></canvas>
 
-
-        <div class="content" id="content">
-            <section class="area">
-                <section class="area_titulo">
-                    <h1>Dados Pessoais</h1>
-                </section>
-                <hr />
-                <section class="area_dados">
-                    <div class="dado">
-                        <h1>Nome</h1>
-                        <input type="text" id="nome" placeholder="Nome..." />
-                    </div>
-
-                    <div class="dado">
-                        <h1>Sobrenome</h1>
-                        <input type="text" id="sobrenome" placeholder="Sobrenome..." />
-                    </div>
-
-                    <div class="campo">
-                        <h1>Cargo</h1>
-                        <div class="select-container">
-                            <select id="cargo" required>
-                                <option value="" disabled selected>Selecione...</option>
-                                <option value="gerente">Gerente</option>
-                                <option value="programador">Programador</option>
-                                <option value="agente">Agente de Campo</option>
-                            </select>
-                            <span class="focus"></span>
+        <forms method="post">
+            <div class="content" id="content">
+                <section class="area">
+                    <section class="area_titulo">
+                        <h1>Dados Pessoais</h1>
+                    </section>
+                    <hr />
+                    <section class="area_dados">
+                        <div class="dado">
+                            <h1>Nome</h1>
+                            <input type="text" id="nome" placeholder="Nome..." />
                         </div>
+
+                        <div class="dado">
+                            <h1>Cargo</h1>
+                            <div class="select-container">
+                                <select id="cargo" required>
+                                    <option value="" disabled selected>Selecione...</option>
+                                    <option value="gerente">Gerente</option>
+                                    <option value="programador">Programador</option>
+                                    <option value="agente">Agente de Campo</option>
+                                </select>
+                                <span class="focus"></span>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+                 <section class="area">
+                    <section class="area_titulo">
+                        <h1>Dados Cadastrais</h1>
+                    </section>
+                    <hr />
+                    <section class="area_dados">
+                        <div class="dado">
+                            <h1>Matrícula</h1>
+                            <input type="text" id="matricula" placeholder="" />
+                        </div>
+                        <div class="dado">
+                            <h1>Senha</h1>
+                            <input type="text" id="senha" placeholder="Senha..." />
+                        </div>
+                    </section>
+                </section>
+                <section class="perfil">
+                    <div class="textos">
+                        <h1>Foto de Perfil</h1>
+                        <div class="foto" id="fotoContainer">
+                        <svg id="profileImageDefault" xmlns="http://www.w3.org/2000/svg" viewBox="80 -880 800 880"
+                            fill="#e3e3e3">
+                            <path
+                                d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z" />
+                        </svg>
+                    </div>
+                        <input type="file" id="fotoInput" accept="image/*" style="display:none" />
+                        <input type="button" value="Escolher arquivo" class="botao" id="botaoEscolherArquivo" />
+                        
                     </div>
                 </section>
-            </section>
-
-            <section class="area">
-                <section class="area_titulo">
-                    <h1>Dados Cadastrais</h1>
+                <section class="submit">
+                    <button type="submit" value="Cadastrar" class="btn">Cadastrar</button>
                 </section>
-                <hr />
-                <section class="area_dados">
-                    <div class="dado">
-                        <h1>Matrícula</h1>
-                        <input type="text" id="matricula" placeholder="" />
-                    </div>
-                </section>
-            </section>
-
-            <section class="perfil">
-                <div class="foto" id="fotoContainer">
-                    <svg id="profileImageDefault" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
-                        fill="#e3e3e3">
-                        <path
-                            d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z" />
-                    </svg>
-                </div>
-                <div class="textos">
-                    <h1>Foto de Perfil</h1>
-                    <input type="file" id="fotoInput" accept="image/*" style="display:none" />
-                    <input type="button" value="Escolher arquivo" class="botao" id="botaoEscolherArquivo" />
-                    <input type="button" value="Cadastrar" class="cadastrar" />
-                </div>
-            </section>
-        </div>
+            </div>
+        </forms>
     </main>
 
     <script>
@@ -610,7 +624,7 @@
 
 
             const focusableElements = document.querySelectorAll(
-                '.dado input, .campo select, .perfil .botao, .perfil .cadastrar'
+                '.dado input, .campo select, .perfil .botao, .perfil .btn'
             );
             const fields = Array.from(focusableElements);
 
@@ -623,49 +637,67 @@
                             e.preventDefault();
                             const nextField = fields[currentIndex + 1];
                             if (nextField) nextField.focus();
-                            else if (currentField.classList && currentField.classList.contains('cadastrar')) currentField.click();
+                            else if (currentField.classList && currentField.classList.contains('btn')) currentField.click();
                         }
                     }
                 });
             }
 
 
-            const input = document.getElementById("matricula");
-            const mensagemBase = "Escreva a matrícula aqui";
-            const pontuacoes = [".", "..", "..."];
-            let index = 0;
-            let texto = "";
-            let animandoPontinhos = false;
+            const inputs = [
+                { element: document.getElementById("matricula"), mensagem: "Insira a matrícula." },
+                { element: document.getElementById("nome"), mensagem: "Insira o nome." },
+                { element: document.getElementById("senha"), mensagem: "Insira o senha." }
+            ];
 
-            function digitarTexto() {
-                if (!input) return;
-                if (index < mensagemBase.length) {
-                    texto += mensagemBase[index];
-                    input.placeholder = texto;
-                    index++;
-                    setTimeout(digitarTexto, 80);
-                } else {
-                    animarPontinhos();
+            const pontuacoes = ["..", "", "."];
+            let animacoesConcluidas = 0;
+
+            function animarPlaceholder(input, mensagemBase, aoTerminar) {
+                let texto = "";
+                let index = 0;
+
+                function digitarTexto() {
+                    if (index < mensagemBase.length) {
+                        texto += mensagemBase[index];
+                        input.placeholder = texto;
+                        index++;
+                        setTimeout(digitarTexto, 45);
+                    } else {
+                        aoTerminar(input, mensagemBase);
+                    }
                 }
+
+                digitarTexto();
             }
 
-            function animarPontinhos() {
-                if (!input) return;
-                animandoPontinhos = true;
+            function iniciarPontinhosSincronizados(campos) {
                 let pontoIndex = 0;
                 setInterval(() => {
-                    if (animandoPontinhos) {
-                        input.placeholder = mensagemBase + pontuacoes[pontoIndex];
-                        pontoIndex = (pontoIndex + 1) % pontuacoes.length;
-                    }
-                }, 500);
+                    pontoIndex = (pontoIndex + 1) % pontuacoes.length;
+                    campos.forEach(({ element, mensagem }) => {
+                        element.placeholder = mensagem + pontuacoes[pontoIndex];
+                    });
+                }, 600);
             }
 
-            digitarTexto();
+
+            inputs.forEach(({ element, mensagem }) => {
+                animarPlaceholder(element, mensagem, () => {
+                    animacoesConcluidas++;
+                    if (animacoesConcluidas === inputs.length) {
+                        iniciarPontinhosSincronizados(inputs);
+                    }
+                });
+            });
+
+
+
+
 
 
             const canvas = document.getElementById("particlesCanvas");
-            if (!canvas) return; // segurança
+            if (!canvas) return;
             const ctx = canvas.getContext("2d");
 
 
@@ -696,8 +728,8 @@
                     this.size = Math.random() * 1.3 + 0.6;
                     this.speedX = (Math.random() - 0.5) * (Math.random() * 0.5 + 0.3);
                     this.speedY = (Math.random() - 0.5) * (Math.random() * 0.5 + 0.1);
-                    const lightness = 60 + Math.random() * 10; // tons de cinza de 20% a 80%
-                    this.color = `hsl(205, 100%, ${lightness}%)`; // saturação 0% -> cinza
+                    const lightness = 60 + Math.random() * 10;
+                    this.color = `hsl(205, 100%, ${lightness}%)`;
                 }
                 update(areaW, areaH) {
                     this.areaW = areaW || this.areaW;
@@ -719,7 +751,7 @@
             }
 
             const particles = [];
-            const particleCount = 60;
+            const particleCount = 0;
 
             function initParticles() {
                 particles.length = 0;
@@ -776,6 +808,7 @@
                     p.update(w, h);
                     p.draw(ctx);
                 }
+
                 connectParticles(ctx, particles);
                 requestAnimationFrame(animate);
             }
@@ -811,4 +844,4 @@
     </script>
 </body>
 
-</html>>
+</html>

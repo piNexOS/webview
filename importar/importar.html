@@ -188,7 +188,18 @@
         .textos {
             display: flex;
             flex-direction: column;
+            text-align: left;
+        }
+
+        .area_titulo {
+            margin-left: 1em;
+        }
+
+        .inputs{
+            display: flex;
+            flex-flow: column nowrap;
             gap: 1em;
+            margin-top: 1em;
         }
 
         .botao,
@@ -248,24 +259,27 @@
             <a href="#"><span class="span_header">Programação</span></a>
             <a href="#"><span class="span_header">Gerenciamento</span></a>
             <a href="/cadastro/cadastro.html"><span class="span_header">Cadastro</span></a>
-        </section>
-        <div class="foto_perfil">
-            <a href="#"><img src="icone_usuario.png" alt="usuario" class="icon_usuario"></a>
-        </div>
+            </section>
+            <div class="foto_perfil">
+                <a href="#"><img src="icone_usuario.png" alt="usuario" class="icon_usuario"></a>
+            </div>
     </header>
 
-    <div tabindex="0" onclick="fechaSideBar()" class="content" id="content">
+    <main tabindex="0" onclick="fechaSideBar()" class="content" id="content">
         <section class="textos">
-            <h2>Importar Arquivos</h2>
+            <div class="area_titulo">
+                <h2>Importar Arquivos</h2>
+            </div>
+            <hr>
+            <div class="inputs">
+                <input type="file" id="arquivo" style="display:none" multiple>
+                <label for="arquivo" class="botao">Escolher arquivos</label>
 
-            <input type="file" id="arquivo" style="display:none" multiple>
-            <label for="arquivo" class="botao">Escolher arquivos</label>
-
-            <input type="button" value="Enviar" class="enviar">
-
+                <input type="button" value="Enviar" class="enviar">
+            </div>
             <p id="nomeArquivo">Nenhum arquivo selecionado.</p>
         </section>
-    </div>
+    </main>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

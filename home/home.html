@@ -4,131 +4,230 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;500&display=swap');
+
+        :root {
+            --cor-fundo: #373F46;
+            --cor-header: #272C2F;
+            --cor-nexos: #26a5ee;
+            --cor-nexosdark: rgb(17, 136, 206);
+            --cor-texto: #fff;
+        }
+
+        ::-webkit-scrollbar {
+            background-color: var(--cor-header);
+            color: #000000;
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background-color: #181a1b;
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background-color: #000000;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--cor-nexos);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--cor-nexosdark);
+            border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "League Spartan", sans-serif;
+            font-weight: 500;
+        }
+
+        body {
+            background: linear-gradient(35deg, rgba(41, 41, 41, 1) 0%, rgba(58, 66, 72, 1) 60%);
+            color: var(--cor-texto);
+            min-height: 100vh;
+        }
+
+        hr {
+            width: 100%;
+            height: 1px;
+            border: 0;
+            border-top: 1px solid var(--cor-nexos);
+            margin-top: 3px;
+        }
+
+        header {
+            background-color: var(--cor-header);
+            height: 4em;
+            padding-left: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 1em;
+            box-shadow: 0 -2px 8px var(--cor-nexosdark);
+        }
+
+        .span_header {
+            font-size: 1.22rem;
+        }
+        
+        .icone_lista {
+            background-color: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: none;
+        }
+
+        .icon_usuario {
+            width: 30px;
+        }
+
+        .cards-container {
+            margin: 2em auto;
+            width: 95%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1em;
+        }
+
+        .card {
+            background: #2f363b;
+            padding: 1em;
+            border-radius: 10px;
+            box-shadow: 0 0 5px #00000070;
+        }
+
+        .blocos-graficos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1em;
+            width: 95%;
+            margin: 1em auto;
+        }
+
+        .bloco {
+            background: #d5d5d57c;
+            padding: 1.5em;
+            border-radius: 10px;
+            height: 280px;
+        }
+
+        .tabelas-container {
+            width: 95%;
+            margin: 1.5em auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1em;
+        }
+
+        .img_logo {
+            margin-left: -20px;
+            width: 135px;
+        }
+
+        .foto_perfil {
+            position: absolute;
+            right: 1.5em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #2f363b;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            padding: 0.7em;
+            border-bottom: 1px solid #444;
+            text-align: left;
+        }
+
+        table th {
+            background: #22282c;
+        }
+
+        @media (max-width: 768px) {
+            .blocos-graficos {
+                grid-template-columns: 1fr;
+            }
+
+            .tabelas-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;500&display=swap');
-
-:root {
-    --cor-fundo: #373F46;
-    --cor-header: #272C2F;
-    --cor-nexos: #26a5ee;
-    --cor-nexosdark: rgb(17, 136, 206);
-    --cor-texto: #fff;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    font-family: "League Spartan", sans-serif;
-    font-weight: 500;
-
-}
-
-::-webkit-scrollbar {
-    background-color: var(--cor-header);
-    color: #000000;
-    width: 10px;
-}
-
-::-webkit-scrollbar-corner {
-    background-color: #181a1b;
-}
-
-::-webkit-scrollbar-thumb:active {
-    background-color: #000000;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: var(--cor-nexos);
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--cor-nexosdark);
-}
-
-body {
-    background: #292929;
-    background: linear-gradient(35deg, rgba(41, 41, 41, 1) 0%, rgba(58, 66, 72, 1) 60%);
-    color: var(--cor-texto);
-    min-height: 100vh;
-}
-
-header {
-    background-color: var(--cor-header);
-    box-shadow: 0 -2px 8px var(--cor-nexosdark);
-    height: 4em;
-    padding-left: 1.5em;
-    display: flex;
-    align-items: center;
-    gap: 1em;
-
-}
-</style>
 <body>
-    <header id="header">
-        <button class="icone_lista" id="abrir">
+
+<header id="header">
+        <button class="icone_lista" id="abrir" aria-label="Abrir menu">
+
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
                     d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
             </svg>
         </button>
         <div class="logo">
-            <img src="LogoNexos.png" class="img_logo" alt="Logo NexOS">
+            <img src="/Imagens/LogoNexos.png" class="img_logo" alt="Logo NexOS" />
         </div>
         <nav class="comandos" id="comandos">
-            <button class="icone_lista fechar" id="fechar">
+            <button class="icone_lista fechar" id="fechar" aria-label="Fechar menu">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                     <path
                         d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708 .708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                 </svg>
             </button>
+            <a href="#"><span class="span_header">Home</span></a>
             <a href="/importar/importar.html"><span class="span_header">Importar</span></a>
             <a href="#"><span class="span_header">Programação</span></a>
             <a href="#"><span class="span_header">Gerenciamento</span></a>
             <a href="#" class="active"><span class="span_header">Cadastro</span></a>
         </nav>
         <div class="foto_perfil">
-            <a href="#"><img src="icone_usuario.png" alt="usuario" class="icon_usuario"></a>
+            <a href="#"><img src="/Imagens/icone_usuario.png" alt="usuario" class="icon_usuario" /></a>
         </div>
-    </header>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-            const comandos = document.getElementById("comandos");
-            const content = document.getElementById("content");
-            const abrir = document.getElementById("abrir");
-            const fechar = document.getElementById("fechar");
-            let sideBar = false;
+</header>
 
-            abrir.addEventListener("click", () => {
-                comandos.classList.toggle("sidebar-ativa");
-                content.classList.toggle("blur");
-                sideBar = !sideBar;
-            });
+<div class="cards-container">
+    <div class="card">12<br>Agentes em Atividade</div>
+    <div class="card">47<br>OS's Realizadas</div>
+    <div class="card">41<br>OS's Pendentes</div>
+    <div class="card">12<br>OS's Rejeitadas</div>
+</div>
 
-            fechar.addEventListener("click", () => {
-                comandos.classList.remove("sidebar-ativa");
-                content.classList.remove("blur");
-                sideBar = false;
-            });
+<div class="blocos-graficos">
+    <div class="bloco">Gráfico de OS's</div>
+    <div class="bloco">Gráfico de Regiões</div>
+</div>
 
-            content.addEventListener("click", () => {
-                if (sideBar) {
-                    comandos.classList.remove("sidebar-ativa");
-                    content.classList.remove("blur");
-                    sideBar = false;
-                }
-            });
+<div class="tabelas-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Agentes em atividade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>(vazio)</td></tr>
+        </tbody>
+    </table>
 
-            window.addEventListener("resize", () => {
-                if (window.innerWidth > 768) {
-                    comandos.classList.remove("sidebar-ativa");
-                    content.classList.remove("blur");
-                    fechar.style.display = "none";
-                } else {
-                    fechar.style.display = "";
-                }
-            });
-        })
-</script>
+    <table>
+        <thead>
+            <tr>
+                <th>Ordens Rejeitadas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>(vazio)</td></tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>
